@@ -1,6 +1,7 @@
 .data
 prompt: .asciiz "Enter the number of Fibonacci numbers to generate: "
-output: .asciiz "\nThe first %d Fibonacci numbers are: "
+output: .asciiz "\nYour Fibonacci numbers are: "
+exception: .asciiz "\nInvalid input, can not be less than 1. Try again!"
 
 .text
 .globl main
@@ -36,7 +37,31 @@ main:
   li $v0, 5
   syscall
   move $t0, $v0
+  li $t1, 1
+  
+  sub $t4, $t0, $t1
+  beq $t0, $t1, case1
+  bgez $t4, case2
+  
 
+  
+  
+  case1: 
+	#code for if n == 1
+	la $a0, exception
+	jal print_string
+	
+	li $v0, 10
+	syscall
+	
+  
+  case2:
+    #code for if n > 1
+	blez $t0, exception 
+	li $t1, 1
+	bgt $t0, $t1, continue 
+
+continue:
   # Initialize Fibonacci sequence
   li $t1, 0 # First Fibonacci number
   li $t2, 1 # Second Fibonacci number
@@ -45,12 +70,12 @@ main:
 
   # Output first two Fibonacci numbers
   move $a0, $t1
-  jal print_int
+  jal print_int_comma
   li $a0, ','
-  li $v0, 11
-  syscall
+  #li $v0, 11
+  #syscall
   move $a0, $t2
-  jal print_int
+  jal print_int_comma
 
   # Generate and output remaining Fibonacci numbers
   sub $t0, $t0, 2 # Decrement n by 2 (already outputted first two numbers)
