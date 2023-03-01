@@ -57,30 +57,29 @@ main:
 	
 	
 
-  case2:
-    #code for if n > 1
-	blez $t0, exception 
-	li $t1, 1
-	bgt $t0, $t1, continue 
+  case2: #Case for if n > 1    
+	blez $t0, exception 			#check if $t0 is less than or equal to zero - if so print exception
+	li $t1, 1						#load integer 1 into register t1
+	bgt $t0, $t1, continue 			#check if $t0 is geater than t1 (1) - if so go to continue:
 
-continue:
-  # Initialize Fibonacci sequence
-  li $t1, 1 # First Fibonacci number
-  li $t2, 1 # Second Fibonacci number
-  la $a0, output
-  jal print_string
+continue:								#Continue function  
+  li $t1, 1 # First Fibonacci number	#Initialize Fibonacci sequence first two numbers loading immediate integer 1 into $t1 register 
+  li $t2, 1 # Second Fibonacci number	#loading immediate integer 1 into $t2 register 
+  la $a0, output						#load the memory address of the string 'output' into the $a0 register
+  jal print_string						#jump and link to the print_string function 
 
   # Output first two Fibonacci numbers
-  move $a0, $t1
-  jal print_int_comma
-  move $a0, $t2
-  jal print_int_comma
+  move $a0, $t1					#moving the value fo $t1 to $a0
+  jal print_int_comma			#jump and link to the print_int_comma function 
+  move $a0, $t2					#moving the value fo $t2 to $a0
+  jal print_int_comma			#jump and link to the print_int_comma function 
 
   # Generate and output remaining Fibonacci numbers
-  sub $t0, $t0, 2 # Decrement n by 2 (already outputted first two numbers)
+  sub $t0, $t0, 2 				# Subtract 2 from the value at register $t0 and store result in $t0 
+								# decrement the value of n by 2 because we already outputted first two Fib numbers outside the loop
   loop:
-    beqz $t0, exit # Exit loop when n reaches 0
-	bltz $t0, exit # Exit loop for when n < 0
+    beqz $t0, exit 				# Exit loop when n reaches 0
+	bltz $t0, exit 				# Exit loop for when n < 0
 
     # Calculate next Fibonacci number
     add $t3, $t1, $t2
