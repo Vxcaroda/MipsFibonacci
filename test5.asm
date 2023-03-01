@@ -1,7 +1,7 @@
 .data
 prompt: .asciiz "Enter the number of Fibonacci numbers to generate: "
 output: .asciiz "\nYour Fibonacci numbers are: "
-exception: .asciiz "\nInvalid input, can not be less than 1. Try again!"
+exception: .asciiz "\nInvalid input, can not be less than 1. Try again!\n"
 
 .text
 .globl main
@@ -16,7 +16,7 @@ print_int:
 print_int_comma:
   li $v0, 1
   syscall
-  li $a0, ','
+  li $a0, ' '
   li $v0, 11
   syscall
   jr $ra
@@ -43,28 +43,38 @@ main:
   beq $t0, $t1, case1
   bgez $t4, case2
   
-
   
   
   case1: 
 	#code for if n == 1
 	la $a0, exception
 	jal print_string
+	jal main
+	#li $v0, 10
+	#syscall
 	
-	li $v0, 10
-	syscall
-
 	
-  
+	
   case2:
     #code for if n > 1
 	blez $t0, exception 
 	li $t1, 1
 	bgt $t0, $t1, continue 
+	
+  #case3:
+	#code for when n == 3	
+	
+	
+	
+	
+	
+	
+	
+	
 
 continue:
   # Initialize Fibonacci sequence
-  li $t1, 0 # First Fibonacci number
+  li $t1, 1 # First Fibonacci number
   li $t2, 1 # Second Fibonacci number
   la $a0, output
   jal print_string
@@ -72,9 +82,6 @@ continue:
   # Output first two Fibonacci numbers
   move $a0, $t1
   jal print_int_comma
-  li $a0, ','
-  #li $v0, 11
-  #syscall
   move $a0, $t2
   jal print_int_comma
 
@@ -82,6 +89,7 @@ continue:
   sub $t0, $t0, 2 # Decrement n by 2 (already outputted first two numbers)
   loop:
     beqz $t0, exit # Exit loop when n reaches 0
+	bltz $t0, exit # Exit loop for when n < 0
 
     # Calculate next Fibonacci number
     add $t3, $t1, $t2
