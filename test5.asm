@@ -1,7 +1,9 @@
 .data
 prompt: .asciiz "Enter the number of Fibonacci numbers to generate: "
+prompt2: .asciiz "\nWould you like to coninue? 1 = Continue or 0 = Exit\n"
 output: .asciiz "\nYour Fibonacci numbers are: "
 exception: .asciiz "\nInvalid input, can not be less than 1. Try again!\n"
+exception2: .asciiz"\nInvalid input: choose 1 = Continue or 0 = Exit\n"
 
 .text
 .globl main
@@ -54,23 +56,12 @@ main:
 	#syscall
 	
 	
-	
+
   case2:
     #code for if n > 1
 	blez $t0, exception 
 	li $t1, 1
 	bgt $t0, $t1, continue 
-	
-  #case3:
-	#code for when n == 3	
-	
-	
-	
-	
-	
-	
-	
-	
 
 continue:
   # Initialize Fibonacci sequence
@@ -106,5 +97,16 @@ continue:
     j loop
 
   exit:
+	la $a0, prompt2
+	li $v0, 4
+	syscall 
+	li $v0, 5
+	move $t0, $v0
+	#check if 0 or 1 or other
+	beqz $t5,terminate
+	li $t6, 1
+	beq $t5, $t6, loop #Pickup where left off from last number grabbed 
+	
+ terminate:
     li $v0, 10 # Exit program
     syscall
