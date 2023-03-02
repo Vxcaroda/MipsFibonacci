@@ -1,4 +1,4 @@
-.data
+.data					 #Location where data is stored in memory
 prompt: .asciiz "Enter the number of Fibonacci numbers to generate: "
 prompt2: .asciiz "\nWould you like to coninue? 1 = Continue or 0 = Exit\n"
 output: .asciiz "\nYour Fibonacci numbers are: "
@@ -6,8 +6,8 @@ exception: .asciiz "\nInvalid input, can not be less than 1. Try again!\n"
 exception2: .asciiz"\nInvalid input: choose 1 = Continue or 0 = Exit\n"
 exitmessage: .asciiz"\nProgram terminated."
 
-.text
-.globl main
+.text					  #Section containing instructions and program logic 
+.globl main				  #Making instructions accessable to other files 
 
 # Function to print an integer to console
 print_int:
