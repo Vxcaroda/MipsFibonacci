@@ -1,6 +1,6 @@
 .data					 #Location where data is stored in memory
 prompt: .asciiz "Enter the number of Fibonacci numbers to generate: "
-prompt2: .asciiz "\nWould you like to coninue? 1 = Continue or 0 = Exit\n"
+prompt2: .asciiz "\nWould you like to continue? 1 = Continue or 0 = Exit\n"
 output: .asciiz "\nYour Fibonacci numbers are: "
 exception: .asciiz "\nInvalid input, can not be less than 1. Try again!\n"
 exception2: .asciiz"\nInvalid input: choose 1 = Continue or 0 = Exit\n"
@@ -72,7 +72,7 @@ continue:								#Continue function definition
   # Output first two Fibonacci numbers
   move $a0, $t1							#moving the value of $t1 into $a0
   jal print_int_space					#jump and link to the print_int_space function 
-  move $a0, $t2							#moving the value of $a0 into $t2
+  move $a0, $t2							#moving the value of $t2 into $a0
   jal print_int_space					#jump and link to the print_int_space function 
 
   # Generate and output remaining Fibonacci numbers
@@ -95,12 +95,10 @@ continue:								#Continue function definition
     j loop								#jump to the loop function to repeat the loop 
 
   exit:									#Exit function definition 
-	la $a0, prompt2                                 #load the memory address of the string 'prompt2' into the $a0 register
-      jal print_string						 
-	#li $v0, 4							#load immediate integer 4 into register $v0 for syscall to read 
-	#syscall 							#This is system call 4 which is for printing strings 
-	li $v0, 5                                       #load immediate integer 5 into register $v0
-      syscall							
+	la $a0, prompt2                     #load the memory address of the string 'prompt2' into the $a0 register
+    jal print_string						 
+	li $v0, 5                           #load immediate integer 5 into register $v0 to read int from user
+    syscall							#read in integer from $v0
 	move $t0, $v0						#moving the value to $v0 into $t0
 	#check if 0 or 1 or other			#work in progress
 	beqz $t0, terminate					#check if $t5 is equal to zero - if so then call terminate function and end the program 
