@@ -30,7 +30,7 @@ print_string:
   syscall                #print string
   jr $ra                 #jump to return address
 
-main:
+main:					 #Our main funciton definition
   # Prompt user for n
   la $a0, prompt         #loads prompt string into a0
   li $v0, 4              #loads print string system call
@@ -40,7 +40,7 @@ main:
   li $v0, 5              #loads a read integer system call
   syscall                #reads an integer from the user input
   move $t0, $v0          #moves the user input from register v0 to t0
-  li $t1, 1              #loads 1 into t1
+  li $t1, 1              #loads imediate integer 1 into t1
   
   sub $t4, $t0, $t1      #subtracts t1 from t0 and assigns to t4. This is used to test if n > 1.
   beq $t0, $t1, case1    #checks if t0 = t1 (essentialy is n = 1), redirects to case1 if true
@@ -107,7 +107,7 @@ continue:								#Continue function definition
 							#(comment not complete) We might want to pickup where left off from last number grabbed after the user hits continue 
 	
  terminate:								#Our terminate function
-    la $a0, exitmessage
-    jal print_string
+    la $a0, exitmessage					#load address of exitmessage into register $a0
+    jal print_string					#jump and link to the print_string funtion
     li $v0, 10 # Exit program			#load immediate integer 10 into register $v0 for syscall to read 
     syscall								#This is system call 4 which is for terminating execution of the program 
