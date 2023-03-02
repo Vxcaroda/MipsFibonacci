@@ -10,48 +10,48 @@ exception2: .asciiz"\nInvalid input: choose 1 = Continue or 0 = Exit\n"
 
 # Function to print an integer to console
 print_int:
-  li $v0, 1
-  syscall
-  jr $ra
+  li $v0, 1               #loads print integer system call
+  syscall                 #prints integer
+  jr $ra                  #jump to return address
 
 # Function to print an integer to console, followed by a comma
 print_int_space:
-  li $v0, 1
-  syscall
-  li $a0, ' '
-  li $v0, 11
-  syscall
-  jr $ra
+  li $v0, 1              #loads print integer system call
+  syscall                #prints integer
+  li $a0, ' '            #loads a space character into a0
+  li $v0, 11             #loads print character system call
+  syscall                #prints character
+  jr $ra                 #jump to return address
 
 # Function to print a string to console
 print_string:
-  li $v0, 4
-  syscall
-  jr $ra
+  li $v0, 4              #load print string system call
+  syscall                #print string
+  jr $ra                 #jump to return address
 
 main:
   # Prompt user for n
-  la $a0, prompt
-  li $v0, 4
-  syscall
+  la $a0, prompt         #loads prompt string into a0
+  li $v0, 4              #loads print string system call
+  syscall                #prints prompt
 
   # Read n from user input
-  li $v0, 5
-  syscall
-  move $t0, $v0
-  li $t1, 1
+  li $v0, 5              #loads a read integer system call
+  syscall                #reads an integer from the user input
+  move $t0, $v0          #moves the user input from register v0 to t0
+  li $t1, 1              #loads 1 into t1
   
-  sub $t4, $t0, $t1
-  beq $t0, $t1, case1
-  bgez $t4, case2
+  sub $t4, $t0, $t1      #subtracts t1 from t0 and assigns to t4. This is used to test if n > 1.
+  beq $t0, $t1, case1    #checks if t0 = t1 (essentialy is n = 1), redirects to case1 if true
+  bgez $t4, case2        #checks if t4 is greater than or equal to zero. This protects against the case if n is less than zero.
   
   
   
   case1: 
 	#code for if n == 1
-	la $a0, exception
-	jal print_string
-	jal main
+	la $a0, exception      #loads address of exception string into a0
+	jal print_string       #calls print_string function to print exception
+	jal main               #redirects user back to main to enter an n value greater than 1.
 	#li $v0, 10
 	#syscall
 	
@@ -100,9 +100,9 @@ continue:								#Continue function definition
 	li $v0, 5							#load immediate integer 5 into register $v0
 	move $t0, $v0						#moving the value to $v0 into $t0
 	#check if 0 or 1 or other			#work in progress
-	beqz $t5,terminate					#check if $t5 is equal to zero - if so then call terminatefunction and end the program 
+	beqz $t0, terminate					#check if $t5 is equal to zero - if so then call terminatefunction and end the program 
 	li $t6, 1							#load immediate integer 1 into register $t6 
-	beq $t5, $t6, loop 					#check if contents of registers $t5 and $t6 are equal - if so then go to loop function
+	beq $t0, $t6, main 					#check if contents of registers $t5 and $t6 are equal - if so then go to loop function
 							#(comment not complete) We might want to pickup where left off from last number grabbed after the user hits continue 
 	
  terminate:								#Our terminate function
