@@ -4,6 +4,7 @@ prompt2: .asciiz "\nWould you like to coninue? 1 = Continue or 0 = Exit\n"
 output: .asciiz "\nYour Fibonacci numbers are: "
 exception: .asciiz "\nInvalid input, can not be less than 1. Try again!\n"
 exception2: .asciiz"\nInvalid input: choose 1 = Continue or 0 = Exit\n"
+exitmessage: .asciiz"\nProgram terminated."
 
 .text
 .globl main
@@ -43,7 +44,7 @@ main:
   
   sub $t4, $t0, $t1      #subtracts t1 from t0 and assigns to t4. This is used to test if n > 1.
   beq $t0, $t1, case1    #checks if t0 = t1 (essentialy is n = 1), redirects to case1 if true
-  bgez $t4, case2        #checks if t4 is greater than or equal to zero. This protects against the case if n is less than zero.
+  bgez $t4, case2        #checks if t4 is greater than or equal to zero, redirects to case2 if true
   
   
   
@@ -57,7 +58,7 @@ main:
 	
 	
 
-  case2: #Case for if n > 1    
+  case2: #Case to confirm n > 1    
 	blez $t0, exception 				#check if $t0 is less than or equal to zero - if so print exception
 	li $t1, 1							#load integer 1 into register t1
 	bgt $t0, $t1, continue 				#check if $t0 is geater than t1 (1) - if so go to continue:
@@ -94,17 +95,21 @@ continue:								#Continue function definition
     j loop								#jump to the loop function to repeat the loop 
 
   exit:									#Exit function definition 
-	la $a0, prompt2						#load the memory address of the string 'prompt2' into the $a0 register 
-	li $v0, 4							#load immediate integer 4 into register $v0 for syscall to read 
-	syscall 							#This is system call 4 which is for printing strings 
-	li $v0, 5							#load immediate integer 5 into register $v0
+	la $a0, prompt2                                 #load the memory address of the string 'prompt2' into the $a0 register
+      jal print_string						 
+	#li $v0, 4							#load immediate integer 4 into register $v0 for syscall to read 
+	#syscall 							#This is system call 4 which is for printing strings 
+	li $v0, 5                                       #load immediate integer 5 into register $v0
+      syscall							
 	move $t0, $v0						#moving the value to $v0 into $t0
 	#check if 0 or 1 or other			#work in progress
-	beqz $t0, terminate					#check if $t5 is equal to zero - if so then call terminatefunction and end the program 
+	beqz $t0, terminate					#check if $t5 is equal to zero - if so then call terminate function and end the program 
 	li $t6, 1							#load immediate integer 1 into register $t6 
 	beq $t0, $t6, main 					#check if contents of registers $t5 and $t6 are equal - if so then go to loop function
 							#(comment not complete) We might want to pickup where left off from last number grabbed after the user hits continue 
 	
  terminate:								#Our terminate function
+    la $a0, exitmessage
+    jal print_string
     li $v0, 10 # Exit program			#load immediate integer 10 into register $v0 for syscall to read 
     syscall								#This is system call 4 which is for terminating execution of the program 
