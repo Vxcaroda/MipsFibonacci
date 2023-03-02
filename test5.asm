@@ -1,3 +1,17 @@
+#EE466
+#Spring 2023
+#Instructor: Dr. Chen Liu
+#Project 1 Fibonacci Numbers
+#Name 1: Sean Stacy
+#ID: 0861689
+#Major: Software Engineering
+#email: stacysp@clarkson.edu
+#Name 2: David Vicaro
+#ID: 0935614
+#Major: Software Engineering
+#email: vicarodm@clarkson.edu
+#Date: March 3, 2023
+
 .data					 #Location where data is stored in memory
 prompt: .asciiz "Enter the number of Fibonacci numbers to generate: "
 prompt2: .asciiz "\nWould you like to continue? 1 = Continue or 0 = Exit\n"
